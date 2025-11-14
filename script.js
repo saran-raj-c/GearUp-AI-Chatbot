@@ -1,5 +1,5 @@
 // Comprehensive Mechanical Engineering Knowledge Base
-const knowledge Base = {
+const knowledgeBase = {
     thermodynamics: {
         keywords: ['thermodynamics', 'heat', 'energy', 'temperature', 'entropy', 'enthalpy', 'laws of thermodynamics', 'carnot', 'rankine', 'otto', 'diesel'],
         response: `<strong>Thermodynamics</strong> is the branch of physics dealing with heat, work, and energy transformations.
