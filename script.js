@@ -274,3 +274,78 @@ const knowledge Base = {
 </ul>
 
 <strong>Datums:</strong> Reference features (
+};
+
+// Chat functionality
+function sendMessage() {
+    const input = document.getElementById('userInput');
+    const message = input.value.trim();
+    
+    if (message === '') return;
+    
+    // Add user message
+    addMessage(message, 'user');
+    input.value = '';
+    
+    // Get response
+    setTimeout(() => {
+        const response = getResponse(message);
+        addMessage(response, 'bot');
+    }, 500);
+}
+
+function sendSuggestion(question) {
+    const input = document.getElementById('userInput');
+    input.value = question;
+    sendMessage();
+}
+
+function handleKeyPress(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+    }
+}
+
+function addMessage(content, type) {
+    const messagesContainer = document.getElementById('chatMessages');
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${type}-message`;
+    
+    const avatar = document.createElement('div');
+    avatar.className = `message-avatar ${type}-avatar`;
+    avatar.innerHTML = `<svg viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z\"/></svg>`;
+    
+    const messageContent = document.createElement('div');
+    messageContent.className = 'message-content';
+    messageContent.innerHTML = content;
+    
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(messageContent);
+    messagesContainer.appendChild(messageDiv);
+    
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function getResponse(query) {
+    const lowerQuery = query.toLowerCase();
+    
+    for (const [key, topic] of Object.entries(knowledgeBase)) {
+        if (topic.keywords.some(keyword => lowerQuery.includes(keyword))) {
+            return topic.response;
+        }
+    }
+    
+    return `I'd be happy to help with mechanical engineering questions! You can ask me about:<br><br>
+<ul>
+<li>Thermodynamics and heat transfer</li>
+<li>CNC Machining and manufacturing</li>
+<li>CAD/CAM/CAE software</li>
+<li>Materials science and selection</li>
+<li>Lean manufacturing and process optimization</li>
+<li>Fluid mechanics and hydraulics</li>
+<li>GD&T and engineering drawings</li>
+</ul>
+<br>Try asking about any of these topics!`;
+}
